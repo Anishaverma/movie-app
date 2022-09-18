@@ -1,0 +1,10 @@
+.one-movie{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding: 47px;
+    gap: 80px;
+    font-weight: bold;
+    background-color: black;
+}
+

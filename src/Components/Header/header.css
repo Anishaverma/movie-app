@@ -1,0 +1,31 @@
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 80px;
+    background-color: black;
+}
+
+.logo{
+    height:60%;
+    width:20%
+}
+.logo img{
+    height: 100%;
+    width: 100%;
+}
+
+.input-box input{
+    text-align: center;
+}
+
+.links{
+    display: flex;
+    justify-content: space-evenly;
+    width: 25vw;
+}
+
+.link>a{
+    text-decoration: none;
+    color: #E50914;
+}
