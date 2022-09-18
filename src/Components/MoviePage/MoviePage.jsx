@@ -7,6 +7,7 @@ import { API_URL, API_KEY } from "../../secret";
 
 
 const MoviePage = (props) => {
+  console.log(props)
   const [videoObject, setVideoObject] = useState({});
   const opts = {
     height: "100%",
@@ -15,7 +16,7 @@ const MoviePage = (props) => {
       autoplay: 1,
     },
   };
-  let { title, tagline, vote_average, poster_path, overview } = props.location.state;
+  let { title, tagline, vote_average, poster_path, overview } = props?.location?.state;
   useEffect(async () => {
     let response = await axios.get(
       `${API_URL}/movie/${props?.location?.state?.id}/videos?api_key=${API_KEY}&language=en-US`
