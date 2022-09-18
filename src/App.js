@@ -11,47 +11,16 @@ import MoviePage from "./Components/MoviePage/MoviePage";
 
 
 const App = () => {
-  const [state, setState] = useState({
+  const [movieData, setMovieData] = useState({
     moviesData: [],
     currentMovie: "Furious",
     currPage: null,
     pageCount: [],
   })
 
- const  nextPage = async () => {
-    let data = await axios.get(API_URL + "/search/movie", {
-      params: {
-        api_key: API_KEY,
-        page: state.currPage + 1,
-        query: state.currentMovie,
-      },
-    });
-
-    data = data.data.results;
-
-    setState({
-      moviesData: data,
-      currPage: state.currPage + 1,
-    });
-  };
-
- const  previousPage = async () => {
-    let data = await axios.get(API_URL + "/search/movie", {
-      params: {
-        api_key: API_KEY,
-        page: state.currPage - 1,
-        query: state.currentMovie,
-      },
-    });
-    data = data.data.results;
-    setState({
-      moviesData: data,
-      currPage: state.currPage - 1,
-    });
-  };
   useEffect(async () => {
     let data = await axios.get(API_URL + "/search/movie", {
-      params: { api_key: API_KEY, page: 1, query: state.currentMovie },
+      params: { api_key: API_KEY, page: 1, query: movieData.currentMovie },
     });
 
     let noofpages = data.data.total_pages;
@@ -60,7 +29,7 @@ const App = () => {
     for (let i = 1; i <= noofpages; i++) {
       pages.push(i);
     }
-    setState({
+    setMovieData({...movieData, 
       moviesData: data,
       currPage: 1,
       pageCount: pages,
@@ -68,17 +37,51 @@ const App = () => {
 
 
   }, [])
+ const  nextPage = async () => {
+
+    let data = await axios.get(API_URL + "/search/movie", {
+      params: {
+        api_key: API_KEY,
+        page: movieData.currPage + 1,
+        query: movieData.currentMovie,
+      },
+    });
+
+    data = data.data.results;
+
+    setMovieData({...movieData,
+      moviesData: data,
+      currPage: movieData.currPage + 1,
+    });
+  };
+
+ const  previousPage = async () => {
+
+    let data = await axios.get(API_URL + "/search/movie", {
+      params: {
+        api_key: API_KEY,
+        page: movieData.currPage - 1,
+        query: movieData.currentMovie,
+      },
+    });
+    data = data.data.results;
+    setMovieData({...movieData,
+      moviesData: data,
+      currPage: movieData.currPage - 1,
+    });
+  };
+  
 
   const setPage = async (pageNumber) => {
     let data = await axios.get(API_URL + "/search/movie", {
       params: {
         api_key: API_KEY,
         page: pageNumber,
-        query: state.currentMovie,
+        query: movieData.currentMovie,
       },
     });
     data = data.data.results;
-    setState({
+    setMovieData({...movieData,
       moviesData: data,
       currPage: pageNumber,
     });
@@ -93,7 +96,7 @@ const App = () => {
     for (let i = 1; i <= noofpages; i++) {
       pages.push(i);
     }
-    setState({
+    setMovieData({...movieData,
       moviesData: data,
       currentMovie: q,
       pageCount: pages,
@@ -106,17 +109,17 @@ const App = () => {
 
         <Switch>
           <Route path="/" exact>
-            {state.moviesData.length == 0 ? (
+            {movieData.moviesData.length == 0 ? (
               <h1>OOPS NO MOVIES FOUND !!!</h1>
             ) : (
               <React.Fragment>
-                <Movies moviesData={state.moviesData}></Movies>
+                <Movies moviesData={movieData.moviesData}></Movies>
                 <Pagination
                   nextPage={nextPage}
                   previousPage={previousPage}
                   setPage={setPage}
-                  currPage={state.currPage}
-                  page={state.pageCount}
+                  currPage={movieData.currPage}
+                  page={movieData.pageCount}
                 ></Pagination>
               </React.Fragment>
             )}
